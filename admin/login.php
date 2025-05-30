@@ -49,12 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verifikasi password (gunakan password_verify jika password di-hash)
         // Di file login.php, bagian yang menangani login sukses:
         if ($password == $user['password']) {
+            // Di file login.php, pastikan profile_picture di-set dengan benar
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
                 'nama' => $user['nama'],
                 'role' => $user['role'],
-                'profile_picture' => $user['profile_picture'] ?? 'dist/assets/img/blank-pfp.jpeg'
+                'profile_picture' => !empty($user['profile_picture']) && file_exists($user['profile_picture'])
+                    ? $user['profile_picture']
+                    : 'dist/assets/img/blank-pfp.jpeg'
             ];
             $_SESSION['logged_in'] = true;
             $_SESSION['role'] = $user['role']; // Tambahkan ini untuk konsistensi

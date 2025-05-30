@@ -29,8 +29,10 @@ if (!isset($_SESSION['user'])) {
     </a>
     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
         <li class="user-header text-bg-primary">
-            <img src="<?php echo htmlspecialchars($_SESSION['user']['profile_picture']); ?>"
-                class="rounded-circle shadow" alt="User Image" />
+
+            <img src="<?php echo file_exists($_SESSION['user']['profile_picture'])
+                ? htmlspecialchars($_SESSION['user']['profile_picture'])
+                : 'dist/assets/img/blank-pfp.jpeg'; ?>" class="user-image rounded-circle shadow" alt="User Image" />
             <p>
                 <?php echo htmlspecialchars($_SESSION['user']['nama']); ?> -
                 <?php echo ucfirst(htmlspecialchars($_SESSION['user']['role'])); ?>
@@ -38,10 +40,29 @@ if (!isset($_SESSION['user'])) {
         </li>
         <li class="user-footer">
             <a href="profile.php" class="btn btn-default btn-flat">Profile</a>
-            <a href="logout.php" onclick="confirmLogout('<?php echo htmlspecialchars($_SESSION['user']['nama']); ?>')"
+            <a href="#" onclick="return confirmLogout('<?php echo htmlspecialchars($_SESSION['user']['nama']); ?>')"
                 class="btn btn-default btn-flat float-end">Sign out</a>
         </li>
     </ul>
+    <script>
+        // Fungsi untuk konfirmasi logout
+        function confirmLogout(username) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Anda akan sign out dari akun ${username}.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Sign Out!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        }
+    </script>
 </li>
 
 

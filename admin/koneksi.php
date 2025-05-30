@@ -263,5 +263,16 @@ class database
         return false;
     }
 
+    public function jumlah_user_per_role($role)
+    {
+        $query = "SELECT COUNT(*) as total FROM user WHERE role = ?";
+        $stmt = $this->koneksi->prepare($query);
+        $stmt->bind_param('s', $role);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
 }
 ?>

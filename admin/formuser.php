@@ -74,6 +74,8 @@ if (isset($_POST['simpan'])) {
   <!--end::Third Party Plugin(Bootstrap Icons)-->
   <!--begin::Required Plugin(AdminLTE)-->
   <link rel="stylesheet" href="dist/css/adminlte.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!--end::Required Plugin(AdminLTE)-->
 </head>
 <!--end::Head-->
@@ -93,18 +95,13 @@ if (isset($_POST['simpan'])) {
               <i class="bi bi-list"></i>
             </a>
           </li>
-          <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-          <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+          <li class="nav-item d-none d-md-block"><a href="index.php" class="nav-link">Home</a></li>
         </ul>
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
           <!--begin::Navbar Search-->
-          <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-              <i class="bi bi-search"></i>
-            </a>
-          </li>
+
           <!--end::Navbar Search-->
           <!--begin::Messages Dropdown Menu-->
           <li class="nav-item dropdown">
@@ -473,6 +470,23 @@ if (isset($_POST['simpan'])) {
       }
       form.classList.add("was-validated"); // ini kalau kamu pakai Bootstrap class validasi
     });
+
+    function confirmLogout(username) {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: `Anda akan sign out dari akun ${username}.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Sign Out!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'logout.php';
+        }
+      });
+    }
   </script>
 
 </body>
