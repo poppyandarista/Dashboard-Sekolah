@@ -42,41 +42,55 @@
                                 <p>Data Siswa</p>
                             </a>
                         </li>
-
+                    </ul>
                 </li>
 
-            </ul>
-            </li>
-            <li class="nav-header">USER</li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                    <p>
-                        Setting
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="profile.php" class="nav-link">
-                            <i class="nav-icon bi bi-person-circle"></i>
-                            <p>Profil</p>
-                        </a>
-                    </li>
+                <li class="nav-header">USER</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-gear"></i>
 
-
-                    <li class="nav-item">
-                        <a href="./logout.php" class="nav-link">
+                        <p>
+                            Setting
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="profile.php" class="nav-link">
+                                <i class="nav-icon bi bi-person-circle"></i>
+                                <p>Profil</p>
+                            </a>
+                        </li>
+                        <a href="#" class="nav-link" id="signOutBtn">
                             <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                            <p>
-                                Sign Out
-                            </p>
+                            <p>Sign Out</p>
                         </a>
 
-                    </li>
+                    </ul>
+                </li>
 
-                </ul>
-            </li>
+                <script>
+                    document.getElementById('signOutBtn').addEventListener('click', function (e) {
+                        e.preventDefault(); // mencegah link langsung jalan
+
+                        Swal.fire({
+                            title: 'Yakin ingin keluar?',
+                            text: "Kamu akan keluar dari sistem.",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, keluar',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // redirect ke logout.php jika user yakin
+                                window.location.href = './logout.php';
+                            }
+                        });
+                    });
+                </script>
 
             </ul>
             <!--end::Sidebar Menu-->

@@ -18,13 +18,13 @@ if (isset($_SESSION['username'])) {
         // Redirect berdasarkan role
         switch ($user['role']) {
             case 'admin':
-                header("Location: ../admin/index.php");
+                header("Location: index.php");
                 break;
             case 'guru':
                 header("Location: ../guru/index.php");
                 break;
             case 'siswa':
-                header("Location: index.php");
+                header("Location: ../siswa/index.php");
                 break;
             default:
                 session_destroy();
@@ -47,11 +47,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = mysqli_fetch_assoc($result);
 
         // Verifikasi password (gunakan password_verify jika password di-hash)
+        // Di file login.php, bagian yang menangani login sukses:
         if ($password == $user['password']) {
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['nama'] = $user['nama'];
-            $_SESSION['role'] = $user['role'];
+            // Di file login.php, pastikan profile_picture di-set dengan benar
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'username' => $user['username'],
+                'nama' => $user['nama'],
+                'role' => $user['role'],
+                'profile_picture' => !empty($user['profile_picture']) && file_exists($user['profile_picture'])
+                    ? $user['profile_picture']
+                    : 'dist/assets/img/blank-pfp.jpeg'
+            ];
             $_SESSION['logged_in'] = true;
+            $_SESSION['role'] = $user['role']; // Tambahkan ini untuk konsistensi
+            // ... redirect berdasarkan role
+
 
             // Redirect berdasarkan role
             if ($user['role'] == 'admin') {
@@ -59,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } elseif ($user['role'] == 'guru') {
                 header("Location: ../guru/index.php");
             } elseif ($user['role'] == 'siswa') {
-                header("Location: index.php");
+                header("Location: ../siswa/index.php");
             } else {
                 // Role tidak valid
                 session_destroy();

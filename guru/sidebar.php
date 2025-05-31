@@ -54,74 +54,84 @@
                                 <p>Data Agama</p>
                             </a>
                         </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="formjurusan.php" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Form Tambah Jurusan</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="formagama.php" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Form Tambah Agama</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="formuser.php" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Form Tambah User</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-
-                <li class="nav-header">EXAMPLES</li>
+                <li class="nav-header">USER</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                        <i class="nav-icon bi bi-gear"></i>
+
                         <p>
-                            Auth
+                            Setting
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Version 1
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./examples/login.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Login</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./examples/register.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Register</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Version 2
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./examples/login-v2.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Login</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./examples/register-v2.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Register</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./examples/lockscreen.html" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Lockscreen</p>
+                            <a href="profile.php" class="nav-link">
+                                <i class="nav-icon bi bi-person-circle"></i>
+                                <p>Profil</p>
                             </a>
                         </li>
+                        <a href="#" class="nav-link" id="signOutBtn">
+                            <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                            <p>Sign Out</p>
+                        </a>
+
                     </ul>
                 </li>
+
+                <script>
+                    document.getElementById('signOutBtn').addEventListener('click', function (e) {
+                        e.preventDefault(); // mencegah link langsung jalan
+
+                        Swal.fire({
+                            title: 'Yakin ingin keluar?',
+                            text: "Kamu akan keluar dari sistem.",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, keluar',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // redirect ke logout.php jika user yakin
+                                window.location.href = './logout.php';
+                            }
+                        });
+                    });
+                </script>
+
             </ul>
             <!--end::Sidebar Menu-->
         </nav>

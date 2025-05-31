@@ -1,6 +1,8 @@
 <?php
-session_start();
-
+// Gunakan di semua file yang membutuhkan session
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 // Mencegah caching halaman yang terlindungi
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
@@ -51,9 +53,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'guru') {
     integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -73,17 +78,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'guru') {
             </a>
           </li>
           <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-          <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
         </ul>
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
           <!--begin::Navbar Search-->
-          <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-              <i class="bi bi-search"></i>
-            </a>
-          </li>
+
           <!--end::Navbar Search-->
           <!--begin::Messages Dropdown Menu-->
           <li class="nav-item dropdown">
@@ -381,225 +381,121 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'guru') {
     integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ=" crossorigin="anonymous"></script>
   <!-- sortablejs -->
   <script>
-    const connectedSortables = document.querySelectorAll('.connectedSortable');
-    connectedSortables.forEach((connectedSortable) => {
-      let sortable = new Sortable(connectedSortable, {
-        group: 'shared',
-        handle: '.card-header',
+    document.addEventListener('DOMContentLoaded', function () {
+      const connectedSortables = document.querySelectorAll('.connectedSortable');
+      connectedSortables.forEach((connectedSortable) => {
+        let sortable = new Sortable(connectedSortable, {
+          group: 'shared',
+          handle: '.card-header',
+        });
       });
-    });
 
-    const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
-    cardHeaders.forEach((cardHeader) => {
-      cardHeader.style.cursor = 'move';
+      const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+      cardHeaders.forEach((cardHeader) => {
+        cardHeader.style.cursor = 'move';
+      });
     });
   </script>
   <!-- apexcharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
     integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
-  <!-- ChartJS -->
-  <script>
-    // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
-    // IT'S ALL JUST JUNK FOR DEMO
-    // ++++++++++++++++++++++++++++++++++++++++++
-
-    // Mengambil data dari PHP
-    const dataSiswa = <?php echo json_encode($db->get_jumlah_siswa_per_jurusan()); ?>;
-
-    // Menyiapkan data untuk chart
-    const jurusan = [];
-    const kelasX = [];
-    const kelasXI = [];
-    const kelasXII = [];
-
-    dataSiswa.forEach(item => {
-      jurusan.push(item.namajurusan);
-      kelasX.push(parseInt(item.kelas_x));
-      kelasXI.push(parseInt(item.kelas_xi));
-      kelasXII.push(parseInt(item.kelas_xii));
-    });
-
-    const siswa_chart_options = {
-      series: [
-        {
-          name: 'Kelas X',
-          data: kelasX,
-        },
-        {
-          name: 'Kelas XI',
-          data: kelasXI,
-        },
-        {
-          name: 'Kelas XII',
-          data: kelasXII,
-        },
-      ],
-      chart: {
-        height: 300,
-        type: 'area', // Menggunakan tipe area chart
-        stacked: false, // Tidak menumpuk data
-        toolbar: {
-          show: false,
-        },
-      },
-      legend: {
-        position: 'top',
-      },
-      colors: ['#0d6efd', '#20c997', '#fd7e14'],
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        categories: jurusan,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return val + " siswa";
-          }
-        }
-      },
-    };
-
-    const siswa_chart = new ApexCharts(
-      document.querySelector('#revenue-chart'),
-      siswa_chart_options,
-    );
-    siswa_chart.render();
-  </script>
   <!-- jsvectormap -->
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"
     integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
-    integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script>
-  <!-- jsvectormap -->
+
+  <!-- Main Script -->
   <script>
-    const visitorsData = {
-      US: 398, // USA
-      SA: 400, // Saudi Arabia
-      CA: 1000, // Canada
-      DE: 500, // Germany
-      FR: 760, // France
-      CN: 300, // China
-      AU: 700, // Australia
-      BR: 600, // Brazil
-      IN: 800, // India
-      GB: 320, // Great Britain
-      RU: 3000, // Russia
-    };
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fungsi untuk konfirmasi logout
+      function confirmLogout(username) {
+        Swal.fire({
+          title: 'Apakah Anda yakin?',
+          text: `Anda akan sign out dari akun ${username}.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, Sign Out!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = 'logout.php';
+          }
+        });
+      }
 
-    // World map by jsVectorMap
-    const map = new jsVectorMap({
-      selector: '#world-map',
-      map: 'world',
-    });
+      // Mengambil data dari PHP
+      const dataSiswa = <?php echo json_encode($db->get_jumlah_siswa_per_jurusan()); ?>;
 
-    // Sparkline charts
-    const option_sparkline1 = {
-      series: [
-        {
-          data: [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021],
-        },
-      ],
-      chart: {
-        type: 'area',
-        height: 50,
-        sparkline: {
-          enabled: true,
-        },
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      fill: {
-        opacity: 0.3,
-      },
-      yaxis: {
-        min: 0,
-      },
-      colors: ['#DCE6EC'],
-    };
+      // Menyiapkan data untuk chart
+      const jurusan = [];
+      const kelasX = [];
+      const kelasXI = [];
+      const kelasXII = [];
 
-    const sparkline1 = new ApexCharts(document.querySelector('#sparkline-1'), option_sparkline1);
-    sparkline1.render();
-
-    const option_sparkline2 = {
-      series: [
-        {
-          data: [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921],
-        },
-      ],
-      chart: {
-        type: 'area',
-        height: 50,
-        sparkline: {
-          enabled: true,
-        },
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      fill: {
-        opacity: 0.3,
-      },
-      yaxis: {
-        min: 0,
-      },
-      colors: ['#DCE6EC'],
-    };
-
-    const sparkline2 = new ApexCharts(document.querySelector('#sparkline-2'), option_sparkline2);
-    sparkline2.render();
-
-    const option_sparkline3 = {
-      series: [
-        {
-          data: [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21],
-        },
-      ],
-      chart: {
-        type: 'area',
-        height: 50,
-        sparkline: {
-          enabled: true,
-        },
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      fill: {
-        opacity: 0.3,
-      },
-      yaxis: {
-        min: 0,
-      },
-      colors: ['#DCE6EC'],
-    };
-
-    const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
-    sparkline3.render();
-
-    // Fungsi untuk konfirmasi logout
-    function confirmLogout(username) {
-      Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: `Anda akan sign out dari akun ${username}.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Sign Out!',
-        cancelButtonText: 'Batal'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Jika user menekan 'Ya, Sign Out!', arahkan ke logout.php
-          window.location.href = 'logout.php';
-        }
+      dataSiswa.forEach(item => {
+        jurusan.push(item.namajurusan);
+        kelasX.push(parseInt(item.kelas_x));
+        kelasXI.push(parseInt(item.kelas_xi));
+        kelasXII.push(parseInt(item.kelas_xii));
       });
-    }
+
+      // Chart Siswa Per Jurusan
+      if (document.querySelector('#revenue-chart')) {
+        const siswa_chart_options = {
+          series: [
+            {
+              name: 'Kelas X',
+              data: kelasX,
+            },
+            {
+              name: 'Kelas XI',
+              data: kelasXI,
+            },
+            {
+              name: 'Kelas XII',
+              data: kelasXII,
+            },
+          ],
+          chart: {
+            height: 300,
+            type: 'area',
+            stacked: false,
+            toolbar: {
+              show: false,
+            },
+          },
+          legend: {
+            position: 'top',
+          },
+          colors: ['#0d6efd', '#20c997', '#fd7e14'],
+          dataLabels: {
+            enabled: false,
+          },
+          stroke: {
+            curve: 'smooth',
+          },
+          xaxis: {
+            categories: jurusan,
+          },
+          tooltip: {
+            y: {
+              formatter: function (val) {
+                return val + " siswa";
+              }
+            }
+          },
+        };
+
+        const siswa_chart = new ApexCharts(
+          document.querySelector('#revenue-chart'),
+          siswa_chart_options
+        );
+        siswa_chart.render();
+      }
+
+      // Hapus kode yang tidak digunakan (sparkline dan world map)
+    });
   </script>
   <!--end::Script-->
 </body>

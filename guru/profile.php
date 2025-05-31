@@ -2,32 +2,49 @@
 session_start();
 include("koneksi.php");
 
+// Inisialisasi objek database di level global
+$db = new database();
 
 // Mencegah caching halaman yang terlindungi
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
 header("Expires: 0"); // Proxies.
 
-if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'guru') {
-    header("Location: ../login.php");
-    exit;
+if (!isset($_SESSION['user']) || empty($_SESSION['user']['id'])) {
+    // Jika session user tidak ada atau tidak lengkap, ambil dari database
+    // Di bagian atas profile.php, sebelum menampilkan form
+    $user = $db->tampil_data_user_by_id($_SESSION['user']['id']);
+    if ($user) {
+        $_SESSION['user'] = [
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'nama' => $user['nama'],
+            'role' => $user['role'],
+            'profile_picture' => $user['profile_picture'] ?? 'dist/assets/img/blank-pfp.jpeg'
+        ];
+    } else {
+        // Handle error - user tidak ditemukan
+        header("Location: logout.php");
+        exit;
+    }
 }
-$db = new database();
 
 // Inisialisasi variabel error dan success
 $error = '';
 $success = '';
 
-// [Kode PHP handling form submission tetap sama]
-// Pastikan Anda memiliki kode yang mengatur nilai $error dan $success
-// Contoh:
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Pastikan session user memiliki ID
+    if (!isset($_SESSION['user']['id'])) {
+        die("User ID tidak ditemukan dalam session");
+    }
+
     $user_id = $_SESSION['user']['id'];
     $nama = $_POST['nama'];
 
     // Data untuk update
-    $update_data = ['nama' => $nama];
+    $update_data = [];
 
     // Handle upload gambar
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
@@ -73,15 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Jika tidak ada error, update database
     if (empty($error)) {
-        if ($db->update_profile($user_id, $update_data)) {
-            // Update session
-            $_SESSION['user']['nama'] = $nama;
-            if (isset($update_data['profile_picture'])) {
-                $_SESSION['user']['profile_picture'] = $update_data['profile_picture'];
+        try {
+            if ($db->update_profile($user_id, $update_data)) {
+                // Update session
+                $_SESSION['user']['nama'] = $nama;
+                if (isset($update_data['profile_picture'])) {
+                    $_SESSION['user']['profile_picture'] = $update_data['profile_picture'];
+                }
+                $success = "Profil berhasil diperbarui";
+            } else {
+                $error = "Gagal memperbarui profil. Error: " . mysqli_error($db->koneksi);
             }
-            $success = "Profil berhasil diperbarui";
-        } else {
-            $error = "Gagal memperbarui profil. Error: " . mysqli_error($db->koneksi);
+        } catch (Exception $e) {
+            $error = "Error: " . $e->getMessage();
         }
     }
 }
@@ -167,7 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </a>
                     </li>
                     <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
                 </ul>
                 <!--end::Start Navbar Links-->
                 <!--begin::End Navbar Links-->
@@ -239,14 +259,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
                                             <input type="text" class="form-control" id="username"
-                                                value="<?php echo isset($_SESSION['user']['username']) ? htmlspecialchars($_SESSION['user']['username']) : ''; ?>"
+                                                value="<?php echo htmlspecialchars($_SESSION['user']['username'] ?? ''); ?>"
                                                 disabled>
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="nama" class="form-label">Nama Lengkap</label>
                                             <input type="text" class="form-control" id="nama" name="nama"
-                                                value="<?php echo isset($_SESSION['user']['nama']) ? htmlspecialchars($_SESSION['user']['nama']) : ''; ?>">
+                                                value="<?php echo isset($_SESSION['user']['nama']) ? htmlspecialchars($_SESSION['user']['nama']) : ''; ?>"
+                                                readonly>
                                         </div>
 
                                         <div class="mb-3">
@@ -257,9 +278,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
 
                                         <div class="d-grid gap-2">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="bi bi-save"></i> Simpan Perubahan
-                                            </button>
+                                            <form action="profile.php" method="post" enctype="multipart/form-data"
+                                                id="profileForm">
+                                                <!-- ... existing form fields ... -->
+                                                <div class="d-grid gap-2">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-save"></i> Simpan Perubahan
+                                                    </button>
+                                                </div>
+                                            </form>
                                             <a href="index.php" class="btn btn-secondary">
                                                 <i class="bi bi-arrow-left"></i> Kembali
                                             </a>
@@ -323,6 +350,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Attach event listener
             document.getElementById('profile-picture-input')?.addEventListener('change', function () {
                 previewImage(this);
+            });
+        });
+
+        // Di dalam script profile.php
+        document.addEventListener('DOMContentLoaded', function () {
+            // Preview image when selected
+            function previewImage(input) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('profile-picture-preview').src = e.target.result;
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            document.getElementById('profile-picture-input')?.addEventListener('change', function () {
+                previewImage(this);
+            });
+
+            // Handle form submission
+            document.getElementById('profileForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                // Show loading indicator
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+                submitBtn.disabled = true;
+
+                fetch('update_profile.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update profile picture preview
+                            if (data.profile_picture) {
+                                document.getElementById('profile-picture-preview').src = data.profile_picture;
+                                // Update navbar picture
+                                document.querySelector('.user-image').src = data.profile_picture;
+                                document.querySelector('.user-header img').src = data.profile_picture;
+                            }
+
+                            // Update name if changed
+                            if (data.new_name) {
+                                document.querySelector('.user-header p').innerHTML =
+                                    `${data.new_name} - ${data.role}`;
+                                document.querySelectorAll('.d-none.d-md-inline').forEach(el => {
+                                    el.textContent = data.new_name;
+                                });
+                            }
+
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: data.message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: data.message
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Terjadi kesalahan saat menyimpan perubahan'
+                        });
+                    })
+                    .finally(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
             });
         });
     </script>
