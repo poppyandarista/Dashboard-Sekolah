@@ -76,110 +76,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
 
           <!--end::Navbar Search-->
           <!--begin::Messages Dropdown Menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" href="#">
-              <i class="bi bi-chat-text"></i>
-              <span class="navbar-badge badge text-bg-danger">3</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user1-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      Brad Diesel
-                      <span class="float-end fs-7 text-danger"><i class="bi bi-star-fill"></i></span>
-                    </h3>
-                    <p class="fs-7">Call me whenever you can...</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user8-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      John Pierce
-                      <span class="float-end fs-7 text-secondary">
-                        <i class="bi bi-star-fill"></i>
-                      </span>
-                    </h3>
-                    <p class="fs-7">I got your message bro</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user3-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      Nora Silvester
-                      <span class="float-end fs-7 text-warning">
-                        <i class="bi bi-star-fill"></i>
-                      </span>
-                    </h3>
-                    <p class="fs-7">The subject goes here</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-            </div>
-          </li>
-          <!--end::Messages Dropdown Menu-->
-          <!--begin::Notifications Dropdown Menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" href="#">
-              <i class="bi bi-bell-fill"></i>
-              <span class="navbar-badge badge text-bg-warning">15</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-              <span class="dropdown-item dropdown-header">15 Notifications</span>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-envelope me-2"></i> 4 new messages
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> 8 friend requests
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
-            </div>
-          </li>
           <!--end::Notifications Dropdown Menu-->
           <!--begin::Fullscreen Toggle-->
           <li class="nav-item">
@@ -236,12 +132,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
               <div class="card mb-4">
 
                 <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <table id="dataUser" class="table table-bordered table-striped table-hover">
-
+                <div class="card-body p-0 table-responsive">
+                  <table id="DataUser" class="display nowrap" style="width:100%">
                     <thead>
                       <tr>
-                        <th>No</th>
+                        <th style="width: 10px">No</th>
+
                         <th>Username</th>
                         <th>Nama Lengkap</th>
                         <th>Role</th>
@@ -261,7 +157,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                       $data = mysqli_query($db->koneksi, $query);
                       while ($row = mysqli_fetch_array($data)) {
                         ?>
-                        <tr>
+                        <tr class="align-middle">
                           <td><?php echo $no++; ?></td>
                           <td><?php echo $row['username']; ?></td>
                           <td><?php echo $row['nama']; ?></td>
@@ -347,15 +243,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     });
 
     $(document).ready(function () {
-      $('#dataUser').DataTable({
-        "paging": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "lengthMenu": [5, 10, 25, 50, 100],
+      $('#DataUser').DataTable({
+        "responsive": true,
+        "scrollX": true,
         "ajax": {
-          "url": "get_users_data.php", // Buat file ini untuk mengambil data user
-          "dataSrc": ""
+          "url": "get_users.php", // Buat file ini untuk mengambil data user
+          "type": "POST"
         },
         "columns": [
           { "data": "no" },
@@ -363,7 +256,15 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
           { "data": "nama" },
           { "data": "role" },
           { "data": "jurusan" },
-          { "data": "opsi" }
+          {
+            "data": "opsi",
+            "render": function (data, type, row) {
+              return `
+            <button onclick="showEditForm('${row.id}')" class="btn btn-success btn-sm">Edit</button>
+            <a href="#" onclick="confirmDeleteUser('${row.id}', '${row.username}')" class="btn btn-danger btn-sm">Hapus</a>
+          `;
+            }
+          }
         ]
       });
     });
@@ -421,20 +322,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
 
     // Function to save edited data
     function saveEdit() {
-      // Get form data
       var formData = $('#editForm').serialize();
 
-      // Show loading state
       $('#editModalBody').html(`
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p>Menyimpan perubahan...</p>
-        </div>
-    `);
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Menyimpan perubahan...</p>
+    </div>
+  `);
 
-      // Submit form via AJAX
       $.ajax({
         url: 'proses_edit_user.php',
         type: 'POST',
@@ -443,22 +341,23 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
         success: function (response) {
           if (response.success) {
             $('#editModalBody').html(`
-                    <div class="alert alert-success">
-                        ${response.message}
-                    </div>
-                `);
+          <div class="alert alert-success">
+            ${response.message}
+          </div>
+        `);
 
             setTimeout(function () {
               $('#editModal').modal('hide');
 
-              // Perbarui navbar dan user menu
+              // Update semua komponen yang perlu
               updateUserName(response.new_name);
-
-              // Perbarui tabel DataTable
-              updateDataTableRow(response.id, response.new_name);
+              updateDataTable();
 
               if (response.password_changed) {
                 window.location.href = 'logout.php';
+              } else {
+                // Refresh hanya DataTable tanpa reload seluruh halaman
+                $('#DataUser').DataTable().ajax.reload(null, false);
               }
             }, 1500);
           } else {
@@ -496,9 +395,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     }
 
     // Fungsi untuk memperbarui baris di DataTable
-    function updateDataTableRow(userId, newName) {
-      var table = $('#dataUser').DataTable();
-      var rowIndex = -1;
+    function updateDataTable() {
+      var table = $('#DataUser').DataTable();
+      table.ajax.reload(null, false); // false berarti tidak reset paging
+
 
       // Cari baris yang sesuai dengan ID user
       table.rows().every(function (index) {
@@ -527,10 +427,13 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
       $('.user-menu .d-none.d-md-inline').text(newName);
       $('.user-header p').html(`${newName} - ${$('.user-header p').text().split('-')[1]}`);
 
-      // Update di session client-side (jika diperlukan)
+      // Update di session client-side
       if (typeof (Storage) !== 'undefined') {
         sessionStorage.setItem('userName', newName);
       }
+
+      // Kirim request untuk update session PHP (opsional)
+      $.post('update_session.php', { new_name: newName });
     }
 
     // ... (kode JavaScript lainnya yang sudah ada)
@@ -554,6 +457,51 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
       });
     }
   </script>
+
+  <style>
+    /* Add these styles to your existing CSS */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #DataUser {
+      width: 100% !important;
+    }
+
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+
+      .table {
+        font-size: 13px;
+      }
+
+      .card-body {
+        padding: 0.5rem;
+      }
+
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_filter input {
+        font-size: 13px;
+      }
+
+      .dataTables_wrapper .dataTables_length select {
+        padding: 0.2rem 0.5rem;
+      }
+    }
+
+    /* Ensure buttons remain usable on mobile */
+    .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+  </style>
+
+
   <!--end::OverlayScrollbars Configure-->
   <!--end::Script-->
   <!-- Edit Modal -->

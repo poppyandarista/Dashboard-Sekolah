@@ -10,7 +10,10 @@ ini_set('display_errors', 1);
 function jsonResponse($success, $message, $data = [])
 {
     header('Content-Type: application/json');
-    echo json_encode(['success' => $success, 'message' => $message] + $data);
+    echo json_encode(array_merge([
+        'success' => $success,
+        'message' => $message
+    ], $data));
     exit;
 }
 

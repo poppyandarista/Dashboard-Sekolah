@@ -206,6 +206,15 @@ class database
 
     public function update_profile($user_id, $data)
     {
+        // Validasi user_id
+        if (empty($user_id) || !is_numeric($user_id)) {
+            throw new Exception("User ID tidak valid");
+        }
+
+        if (empty($data)) {
+            throw new Exception("Data update kosong");
+        }
+
         $query = "UPDATE user SET ";
         $updates = [];
 
@@ -219,9 +228,18 @@ class database
             $updates[] = "profile_picture = '$profile_picture'";
         }
 
-        $query .= implode(', ', $updates) . " WHERE id = $user_id";
+        if (empty($updates)) {
+            throw new Exception("Tidak ada data yang diupdate");
+        }
 
-        return $this->koneksi->query($query);
+        $query .= implode(', ', $updates) . " WHERE id = " . (int) $user_id;
+
+        $result = $this->koneksi->query($query);
+        if (!$result) {
+            throw new Exception("Error updating profile: " . $this->koneksi->error);
+        }
+
+        return $result;
     }
 
     function tambah_user($username, $password, $nama, $role, $kodejurusan = null)
@@ -243,6 +261,17 @@ class database
             return mysqli_fetch_assoc($data);
         }
         return false;
+    }
+
+    public function jumlah_user_per_role($role)
+    {
+        $query = "SELECT COUNT(*) as total FROM user WHERE role = ?";
+        $stmt = $this->koneksi->prepare($query);
+        $stmt->bind_param('s', $role);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
 }

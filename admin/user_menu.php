@@ -27,22 +27,26 @@ if (!isset($_SESSION['user'])) {
             <?php echo htmlspecialchars($_SESSION['user']['nama']); ?>
         </span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-        <li class="user-header text-bg-primary">
-
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-start">
+        <li class="user-header text-bg-primary d-flex flex-column align-items-center p-3 text-center">
             <img src="<?php echo file_exists($_SESSION['user']['profile_picture'])
                 ? htmlspecialchars($_SESSION['user']['profile_picture'])
-                : 'dist/assets/img/blank-pfp.jpeg'; ?>" class="user-image rounded-circle shadow" alt="User Image" />
-            <p>
-                <?php echo htmlspecialchars($_SESSION['user']['nama']); ?> -
-                <?php echo ucfirst(htmlspecialchars($_SESSION['user']['role'])); ?>
+                : 'dist/assets/img/blank-pfp.jpeg'; ?>" class="rounded-circle shadow mb-2" alt="User Image"
+                style="width: 80px; height: 80px; object-fit: cover;" />
+            <p class="mb-0 fw-bold">
+                <?php echo htmlspecialchars($_SESSION['user']['nama']); ?>
             </p>
+            <small class="text-light">
+                <?php echo ucfirst(htmlspecialchars($_SESSION['user']['role'])); ?>
+            </small>
         </li>
-        <li class="user-footer">
-            <a href="profile.php" class="btn btn-default btn-flat">Profile</a>
+
+        <li class="user-footer d-flex justify-content-between px-3 py-2">
+            <a href="profile.php" class="btn btn-outline-secondary btn-sm w-100 me-1">Profile</a>
             <a href="#" onclick="return confirmLogout('<?php echo htmlspecialchars($_SESSION['user']['nama']); ?>')"
-                class="btn btn-default btn-flat float-end">Sign out</a>
+                class="btn btn-outline-danger btn-sm w-100 ms-1">Sign out</a>
         </li>
+
     </ul>
     <script>
         // Fungsi untuk konfirmasi logout
@@ -76,3 +80,44 @@ if (!isset($_SESSION['user'])) {
         }
     });
 </script>
+
+<style>
+    .user-menu .dropdown-menu {
+        right: 0;
+        left: auto;
+        transform: translateX(-10%);
+        /* bisa juga -100% kalau mau total ke kiri */
+        min-width: 250px;
+        max-width: 90vw;
+        overflow: hidden;
+    }
+
+    @media (max-width: 576px) {
+
+        /* Untuk perbaiki posisi dropdown agar tidak overflow ke kanan */
+        .user-menu .dropdown-menu {
+            right: 0;
+            left: auto;
+            transform: translateX(-80%);
+            /* bisa juga -100% kalau mau total ke kiri */
+            min-width: 250px;
+            max-width: 90vw;
+            overflow: hidden;
+        }
+
+        .dropdown-menu-lg {
+            min-width: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+        }
+
+        .user-footer {
+            flex-direction: column;
+        }
+
+        .user-footer .btn {
+            width: 100% !important;
+            margin: 0.25rem 0;
+        }
+    }
+</style>

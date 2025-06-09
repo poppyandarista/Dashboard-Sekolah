@@ -67,7 +67,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'siswa') {
               <i class="bi bi-list"></i>
             </a>
           </li>
-          <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+          <li class="nav-item d-none d-md-block"><a href="index.php" class="nav-link">Home</a></li>
         </ul>
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
@@ -76,110 +76,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'siswa') {
 
           <!--end::Navbar Search-->
           <!--begin::Messages Dropdown Menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" href="#">
-              <i class="bi bi-chat-text"></i>
-              <span class="navbar-badge badge text-bg-danger">3</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user1-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      Brad Diesel
-                      <span class="float-end fs-7 text-danger"><i class="bi bi-star-fill"></i></span>
-                    </h3>
-                    <p class="fs-7">Call me whenever you can...</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user8-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      John Pierce
-                      <span class="float-end fs-7 text-secondary">
-                        <i class="bi bi-star-fill"></i>
-                      </span>
-                    </h3>
-                    <p class="fs-7">I got your message bro</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <!--begin::Message-->
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="dist/assets/img/user3-128x128.jpg" alt="User Avatar"
-                      class="img-size-50 rounded-circle me-3" />
-                  </div>
-                  <div class="flex-grow-1">
-                    <h3 class="dropdown-item-title">
-                      Nora Silvester
-                      <span class="float-end fs-7 text-warning">
-                        <i class="bi bi-star-fill"></i>
-                      </span>
-                    </h3>
-                    <p class="fs-7">The subject goes here</p>
-                    <p class="fs-7 text-secondary">
-                      <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago
-                    </p>
-                  </div>
-                </div>
-                <!--end::Message-->
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-            </div>
-          </li>
-          <!--end::Messages Dropdown Menu-->
-          <!--begin::Notifications Dropdown Menu-->
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" href="#">
-              <i class="bi bi-bell-fill"></i>
-              <span class="navbar-badge badge text-bg-warning">15</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-              <span class="dropdown-item dropdown-header">15 Notifications</span>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-envelope me-2"></i> 4 new messages
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> 8 friend requests
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
-            </div>
-          </li>
           <!--end::Notifications Dropdown Menu-->
           <!--begin::Fullscreen Toggle-->
           <li class="nav-item">
@@ -224,23 +120,18 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'siswa') {
       <!--end::App Content Header-->
       <!--begin::App Content-->
       <div class="app-content">
-        <!--begin::Container-->
         <div class="container-fluid">
-          <!--begin::Row-->
           <div class="row">
-            <!-- /.col -->
             <div class="col-md-12">
-
-              <!-- /.card -->
               <div class="card mb-4">
-
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <table id="dataSiswa" class="table table-bordered table-striped table-hover">
-
+                <div class="card-header">
+                  <h3 class="card-title">Daftar Siswa</h3>
+                </div>
+                <div class="card-body p-0 table-responsive">
+                  <table id="dataSiswa" class="display nowrap" style="width:100%">
                     <thead>
                       <tr>
-                        <th>No</th>
+                        <th style="width: 10px">No</th>
                         <th>NISN</th>
                         <th>Nama</th>
                         <th>Jenis Kelamin</th>
@@ -258,7 +149,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'siswa') {
                       $no = 1;
                       foreach ($db->tampil_data_siswa() as $x) {
                         ?>
-                        <tr>
+                        <tr class="align-middle">
                           <td><?php echo $no++; ?></td>
                           <td><?php echo $x['nisn']; ?></td>
                           <td><?php echo $x['nama']; ?></td>
@@ -346,16 +237,74 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'siswa') {
 
     $(document).ready(function () {
       $('#dataSiswa').DataTable({
+        "responsive": true,
+        "scrollX": true,
         "paging": true,
         "searching": true,
         "ordering": true,
         "info": true,
-        "lengthMenu": [5, 10, 25, 50, 100] // Jumlah data per halaman
+        "lengthChange": true,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Semua"]],
+        "pageLength": 10,
+        "language": {
+          "lengthMenu": "Tampilkan _MENU_ data per halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+          "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+          "infoFiltered": "(disaring dari _MAX_ total data)",
+          "search": "Cari:",
+          "paginate": {
+            "previous": "<i class='bi bi-chevron-left'></i>",
+            "next": "<i class='bi bi-chevron-right'></i>"
+          }
+        },
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">'
       });
     });
   </script>
 
   <style>
+    /* Add these styles to your existing CSS */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #dataSiswa {
+      width: 100% !important;
+    }
+
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+
+      .table {
+        font-size: 13px;
+      }
+
+      .card-body {
+        padding: 0.5rem;
+      }
+
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_filter input {
+        font-size: 13px;
+      }
+
+      .dataTables_wrapper .dataTables_length select {
+        padding: 0.2rem 0.5rem;
+      }
+    }
+
+    /* Ensure buttons remain usable on mobile */
+    .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
     .edit {
       background-color: #2ecc71;
     }
