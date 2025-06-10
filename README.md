@@ -139,3 +139,37 @@ Menampilkan informasi akun pengguna yang sedang login.
 ![Profil Page](images/profil-page.png)
 
 ---
+
+## 🧩 Rancangan Database
+
+Berikut adalah struktur database yang digunakan dalam aplikasi ini.
+
+---
+
+### 📄 Database `sekolah`
+
+![Database Sekolah](images/tabelsekolah.png)
+
+---
+
+### 📄 Tabel `agama`
+
+![Tabel Agama](images/tabelagama.png)
+
+---
+
+### 📄 Tabel `jurusan`
+
+![Tabel Jurusan](images/tabeljurusan.png)
+
+---
+
+### 📄 Tabel `siswa`
+
+![Tabel Siswa](images/tabelsiswa.png)
+
+---
+
+### 📄 Tabel `user`
+
+![Tabel User](images/tabeluser.png)
